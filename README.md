@@ -16,9 +16,9 @@ the container thus:
 
 ```
 docker run \
-	--env CONTAINER_COUNT=1 \
-	behemphi/stress \
-		--help
+    --env CONTAINER_COUNT=1 \
+    behemphi/stress \
+        --help
 ```
 
 Gotcha: The environment variable is an artifact of the inception-like nature 
@@ -29,10 +29,10 @@ container:
 
 ```
 docker run \
-	--detach \
-	--env CONTAINER_COUNT=1 \
-	behemphi/stress \
-		--cpu 1 --io 1 --vm 2 --vm-bytes 16M --timeout 10s
+    --detach \
+    --env CONTAINER_COUNT=1 \
+    behemphi/stress \
+        --cpu 1 --io 1 --vm 2 --vm-bytes 16M --timeout 10s
 ```
 
 Notice that the CLI of `stress` is preserved exactly.  
@@ -42,13 +42,13 @@ with 6 containers:
 
 ```
 docker run \
-	--detach \
-	--env CONTAINER_COUNT=6 \
-	--privileged \
-	--volume /usr/local/bin/docker:/docker \
-	--volume /var/run/docker.sock:/var/run/docker.sock \
-	behemphi/stress \
-		--cpu 1 --io 1 --vm 2 --vm-bytes 8M --timeout 100s
+    --detach \
+    --env CONTAINER_COUNT=6 \
+    --privileged \
+    --volume /usr/local/bin/docker:/docker \
+    --volume /var/run/docker.sock:/var/run/docker.sock \
+    behemphi/stress \
+        --cpu 1 --io 1 --vm 2 --vm-bytes 8M --timeout 100s
 ```
 
 In this case each of the 6 containers will run for 100 seconds with the 

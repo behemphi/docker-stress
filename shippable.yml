@@ -1,0 +1,10 @@
+# language setting
+language: go
+go: 
+- release
+
+
+# Not much here really
+script:
+- go build
+
