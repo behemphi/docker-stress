@@ -9,15 +9,12 @@ import (
 )
 
 // Rather than reimplementing the `stress` CLI set the number of stress
-// containers to run as an environment variable as a default of 4 in
-// the associated Dockerfile and allow it to be changed as part of the runtime
+// containers to run as an environment variable
 //
-// `stress` parameters will be passed to the container run time config as run
+// `stress` parameters will be passed to the container run time config as
 // parameters of the image. The goal being to make the container run look,
 // more or less, like any CLI call of `stress` itself
 func main() {
-
-	// Set details
 
 	// The number of stress containers that will be run
 	container_count := 4
@@ -56,30 +53,29 @@ func main() {
 	args := os.Args
 	args = append(args[:0], args[1:]...)
 
-	// make the calls to Docker function
+	// If the container count is just one, then we assume this is the only
+	// container to be started and we call stress directly.
+	// Otherwise, we keep iterating spawning containers until we reached
+	// the specified number.
+	// This means we can use a single image.
 	if container_count == 1 {
 
 		cmd := exec.Command("stress", args...)
 		_, err := cmd.Output()
 		if err != nil {
 			log.Printf(err.Error())
-			//return
 		}
 		log.Printf("Stress command to be executed executed: %s \n", cmd)
-
-		// _, err = cmd.Output()
-		// if err != nil {
-		// 	log.Printf(err.Error())
-		// 	//return
-		// }
-
-		//log.Printf("Output from `stress` is: %s \n", execOut)
 
 	} else {
 		for i := 0; i < container_count+1; i++ {
 			cmd := []string{"run", "--detach", "--env", "CONTAINER_COUNT=1",
 				"behemphi/stress"}
 			args = append(cmd, args...)
+
+			// Because the run time config of the contianer will mount the
+			// docker binary and socket on the host, we are talking to
+			// the host docker container.
 			docker_cmd := exec.Command("/docker", args...)
 
 			log.Printf("Docker command to spown containes is: %s \n", docker_cmd)
@@ -87,7 +83,6 @@ func main() {
 			out, err := docker_cmd.Output()
 			if err != nil {
 				log.Printf(err.Error())
-				//return
 			}
 
 			log.Printf("Output from docker run command: %s", out)
