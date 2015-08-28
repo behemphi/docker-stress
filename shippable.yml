@@ -6,5 +6,5 @@ go:
 
 # Not much here really
 script:
-- go build
+- make shippable
 
