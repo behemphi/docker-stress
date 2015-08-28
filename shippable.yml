@@ -11,4 +11,7 @@ before_install:
 # Not much here really
 script:
 - go build -o docker-stress
+- ls -lah
+- ls -lah ..
+- ls -lah ../..
 
