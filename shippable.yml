@@ -21,4 +21,3 @@ script:
 
 after_script:
 - cp -r docker-stress ./shippable/buildoutput
-- sed -i 's/docker-stress/.\/buildoutput\/docker-stress/' Dockerfile
