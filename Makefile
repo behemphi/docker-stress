@@ -5,5 +5,3 @@ linux:
 osx:
 	go build
 
-shippable:
-	go build -o docker-stress
