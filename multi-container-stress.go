@@ -58,36 +58,25 @@ func main() {
 
 	// make the calls to Docker function
 	if container_count == 1 {
-
-		cmd := exec.Command("stress", args...)
-		_, err := cmd.Output()
+		log.Printf("Args for stress: %s", args)
+		cmd, err := exec.Command("stress", args...).Output()
 		if err != nil {
-			log.Printf(err.Error())
+			log.Printf("Error in stress command: %s", err.Error())
 			//return
 		}
 		log.Printf("Stress command to be executed executed: %s \n", cmd)
 
-		// _, err = cmd.Output()
-		// if err != nil {
-		// 	log.Printf(err.Error())
-		// 	//return
-		// }
-
-		//log.Printf("Output from `stress` is: %s \n", execOut)
-
 	} else {
-		for i := 0; i < container_count+1; i++ {
-			cmd := []string{"run", "--detach", "--env", "CONTAINER_COUNT=1",
-				"behemphi/stress"}
-			args = append(cmd, args...)
-			docker_cmd := exec.Command("/docker", args...)
+		cmd := []string{"run", "--detach", "--env", "CONTAINER_COUNT=1",
+			"behemphi/stress"}
+		args = append(cmd, args...)
 
-			log.Printf("Docker command to spown containes is: %s \n", docker_cmd)
-
-			out, err := docker_cmd.Output()
+		for i := 0; i < container_count; i++ {
+			log.Printf("In Loop: i = %d", i)
+			log.Printf("In Loop: container_count = %d", container_count)
+			out, err := exec.Command("/docker", args...).Output()
 			if err != nil {
 				log.Printf(err.Error())
-				//return
 			}
 
 			log.Printf("Output from docker run command: %s", out)
