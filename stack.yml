@@ -1,0 +1,27 @@
+containers:
+  cAdvisor:
+    scheduler: random
+    availability: per-pool
+    instances:
+      min: 1
+      max: 1
+      default: 1
+    config:
+      image: "google/cadvisor:latest"
+      env: {}
+      volumes:
+        - host_volume: /var/run
+          container_volume: /var/run
+          read_only: false
+        - host_volume: /sys
+          container_volume: /sys
+          read_only: true
+        - host_volume: /var/lib/docker/
+          container_volume: /var/lib/docker/
+          read_only: true
+      ports:
+        - host_port: "8080"
+          protocol: tcp
+          container_port: "8080"
+    host_config:
+      restart_policy: {}

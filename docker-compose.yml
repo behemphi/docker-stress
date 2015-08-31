@@ -1,0 +1,19 @@
+cadvisor:
+    container_name: cadvisor
+    image: google/cadvisor
+    ports: 
+        - "8080:8080"
+    restart: always
+    volumes:
+        - /var/run:/var/run:rw
+        - /sys:/sys:ro
+        - /var/lib/docker/:var/lib/docker:ro
+stress_full: 
+    command: --cpu 1 --io 1 --vm 1 --vm-bytes 8M --timeout 30s
+    environment:
+        - CONTAINER_COUNT=2
+    image: behemphi/stress 
+    privileged: true
+    volumes:
+        - /usr/local/bin/docker:/docker
+        - /var/run/docker.sock:/var/run/docker.sock     
