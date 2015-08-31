@@ -71,9 +71,12 @@ func main() {
 			"behemphi/stress"}
 		args = append(cmd, args...)
 
+		// Loop through the container count and start a stress container
+		// with the parameters passed to this container.
 		for i := 0; i < container_count; i++ {
 			log.Printf("In Loop: i = %d", i)
 			log.Printf("In Loop: container_count = %d", container_count)
+
 			out, err := exec.Command("/docker", args...).Output()
 			if err != nil {
 				log.Printf(err.Error())
